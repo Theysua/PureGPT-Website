@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>交互式对话框</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-container {
+      flex-grow: 1;
+      border: 1px solid #ccc;
+      padding: 10px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent #000;
+    }
+
+    .chat-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .chat-container::-webkit-scrollbar-thumb {
+      background-color: #000;
+      border-radius: 3px;
+    }
+
+    .chat-container p {
+      margin: 5px;
+    }
+
+    .user-message-container {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .user-message {
+      background-color: #cdf5d4;
+      color: #333;
+      border-radius: 15px;
+      padding: 8px 12px;
+      max-width: 80%;
+    }
+
+    .bot-message-container {
+      display: flex;
+    }
+
+    .bot-message {
+      background-color: #eaeaea;
+      color: #333;
+      border-radius: 15px;
+      padding: 8px 12px;
+      max-width: 80%;
+    }
+
+    .user-input {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .input-container {
+      flex: 1;
+      display: flex;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* 外扩散的阴影效果 */
+      border-radius: 20px; /* 圆角 */
+      overflow: hidden;
+    }
+
+    .user-input input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 8px;
+      font-size: 14px;
+      border-radius: 20px;
+    }
+
+    .send-button-container {
+      background-color: #f0f0f0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-left: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background-color: #cdf5d4;
+    }
+
+
+
+    .send-button {
+      width: 10px;
+      height: 10px;
+      border: none;
+      background-color: transparent;
+      border-top: 2px solid #333;
+      border-right: 2px solid #333;
+      transform: rotate(-45deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container" id="chatContainer"></div>
+
+  <div class="user-input">
+    <div class="input-container">
+      <input type="text" id="userInput" onkeydown="handleKeyDown(event)">
+      <div class="send-button-container" onclick="returnUserInput()">
+        <div class="send-button"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function returnUserInput() {
+      var userInput = document.getElementById("userInput").value;
+      var chatContainer = document.getElementById("chatContainer");
+
+      // 创建用户发送的消息容器和元素
+      var userMessageContainer = document.createElement("div");
+      userMessageContainer.className = "user-message-container";
+
+      var userMessage = document.createElement("p");
+      userMessage.textContent = userInput;
+      userMessage.className = "user-message";
+
+      userMessageContainer.appendChild(userMessage);
+
+      // 创建对方返回的消息容器和元素
+      var botMessageContainer = document.createElement("div");
+      botMessageContainer.className = "bot-message-container";
+
+      var botMessage = document.createElement("p");
+      botMessage.textContent = userInput;
+      botMessage.className = "bot-message";
+
+      botMessageContainer.appendChild(botMessage);
+
+      // 将消息容器添加到聊天区域
+      chatContainer.appendChild(userMessageContainer);
+      chatContainer.appendChild(botMessageContainer);
+
+      // 将滚动条滚动到底部
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+
+      // 清空输入框
+      document.getElementById("userInput").value = "";
+
+      return false; // 阻止表单提交
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === "Enter") {
+        returnUserInput();
+      }
+    }
+  </script>
+</body>
+</html>
